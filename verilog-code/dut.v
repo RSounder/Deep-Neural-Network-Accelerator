@@ -187,9 +187,9 @@ always @(posedge clk) begin
       inter_conv6_state: begin
         if(conv_row_index[0] == 0)
           current_state <=  conv_compare_state;
-        if(even_max_pool_valid_bit == 1'd0 && conv_row_index[0] == 1'd1)
+        else if(even_max_pool_valid_bit == 1'd0)
           current_state <=  max_pool1_state;
-        else if(even_max_pool_valid_bit == 1'd1 && conv_row_index[0] == 1'd1) 
+        else if(even_max_pool_valid_bit == 1'd1) 
           current_state <=  max_pool2_state;
       end
       conv_compare_state: begin
