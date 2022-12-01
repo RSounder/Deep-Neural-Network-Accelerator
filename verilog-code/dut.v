@@ -7,7 +7,7 @@ module MyDesign(
      
     //---------------------------------------------------------------------------
     //Input SRAM interface
-      output 		input_sram_write_enable    ,
+      output 		        input_sram_write_enable    ,
       output reg [11:0] input_sram_write_addresss  ,
       output reg [15:0] input_sram_write_data      ,
       output     [11:0] input_sram_read_address    ,
@@ -23,7 +23,7 @@ module MyDesign(
 
     //---------------------------------------------------------------------------
     //scratchpad SRAM interface
-      output 		scratchpad_sram_write_enable    ,
+      output 		        scratchpad_sram_write_enable    ,
       output reg [11:0] scratchpad_sram_write_addresss  ,
       output reg [15:0] scratchpad_sram_write_data      ,
       output reg [11:0] scratchpad_sram_read_address    ,
