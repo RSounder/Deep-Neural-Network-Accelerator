@@ -1,9 +1,9 @@
 module MyDesign(
     //Control signals
-      output  reg dut_busy                    ,
-      input   wire dut_run                    , 
-      input   wire reset_b                    ,  
-      input   wire clk                        ,
+      output reg        dut_busy                   ,
+      input  wire       dut_run                    , 
+      input  wire       reset_b                    ,  
+      input  wire       clk                        ,
      
     //---------------------------------------------------------------------------
     //Input SRAM interface
