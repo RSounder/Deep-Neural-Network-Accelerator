@@ -146,10 +146,10 @@ assign temp_even_max_pool_out = (max_pool_out > relued_max_out) ? max_pool_out :
 
 //when should we change states?
 always @(posedge clk) begin
-	if(!reset_b) begin
+  if(!reset_b) begin
     current_state <= 'd0;
   end
-	else begin
+  else begin
     casex(current_state)
       reset_state: begin
         if(dut_run == 1)
@@ -261,7 +261,7 @@ always @(posedge clk) begin
       k_reg_array[kernel_counter + 1 ] <= weights_sram_read_data[7:0];
       kernel_counter <= kernel_counter + 2;
       current_size_reg <= input_sram_read_data[7:0];
-	    dut_busy <= 'd1;
+      dut_busy <= 'd1;
 
       if (kernel_counter <= 8) begin
         weights_sram_read_address <= weights_sram_read_address + 1'd1;
@@ -281,25 +281,25 @@ always @(posedge clk) begin
     inter_conv5_state: begin
       mac1_reg <= temp_conv_mac1_output;
       mac0_reg <= temp_conv_mac0_output;
-	    if(status_last_index_arrived == 1) begin
-	      static_base_addr <= dynamic_base_addr + 1'd1;
+      if(status_last_index_arrived == 1) begin
+        static_base_addr <= dynamic_base_addr + 1'd1;
       end
     end
 
     conv_compare_state: begin
       temp_max_pool_reg_array[max_pool_reg_write_ind] <= relued_max_out; 
 
-  	  if(max_pool_reg_write_ind == 'd30) begin
-	      max_pool_reg_write_ind <= 'd0;
+      if(max_pool_reg_write_ind == 'd30) begin
+        max_pool_reg_write_ind <= 'd0;
       end
-	    else begin
+      else begin
         max_pool_reg_write_ind <= max_pool_reg_write_ind + 1'd1;
       end
       if (conv_odd_col_index == current_size_reg - 3) begin
         conv_row_index <= conv_row_index + 1'd1;
         conv_even_col_index <= 'd0;
         conv_odd_col_index <= 'd1;
-		  end
+      end
       else begin
         conv_row_index <= conv_row_index;
         conv_even_col_index <= conv_even_col_index + 'd2;
@@ -341,14 +341,14 @@ always @(posedge clk) begin
     end
 
     max_pool2_state: begin
-  	  temp_odd_max_pool_reg <= temp_odd_max_pool_out;
+      temp_odd_max_pool_reg <= temp_odd_max_pool_out;
       odd_max_pool_valid_bit <= 1'd1;
       output_sram_write_enable  <= 1'd1;
-	    if(max_pool_reg_read_ind == 'd30) begin
-	      max_pool_reg_read_ind <= 'd0;
+      if(max_pool_reg_read_ind == 'd30) begin
+        max_pool_reg_read_ind <= 'd0;
       end
-	    else begin
-	      max_pool_reg_read_ind <= max_pool_reg_read_ind + 1'd1;
+      else begin
+        max_pool_reg_read_ind <= max_pool_reg_read_ind + 1'd1;
       end
     end
 
@@ -362,8 +362,8 @@ always @(posedge clk) begin
                                   (odd_max_pool_valid_bit  ? (temp_odd_max_pool_reg ) : 8'd0) 
                                 };
 
-  	  if(current_size_reg == 'd64) begin
-	      max_pool_reg_read_ind <= 'd0;
+      if(current_size_reg == 'd64) begin
+        max_pool_reg_read_ind <= 'd0;
       end
       if(conv_row_index != current_size_reg - 2 && conv_odd_col_index != current_size_reg - 2) begin
         if(conv_odd_col_index == current_size_reg - 3) begin
@@ -383,19 +383,19 @@ always @(posedge clk) begin
         conv_odd_col_index <= 1'd1;
       end
 
-  	  even_max_pool_valid_bit <= 'd0;
-	    odd_max_pool_valid_bit <= 'd0;
+      even_max_pool_valid_bit <= 'd0;
+      odd_max_pool_valid_bit <= 'd0;
 
     end
 
     next_data_fetch_state: begin
       max_pool_reg_write_ind <= 'd0;
       max_pool_reg_read_ind <= 'd0;
-	    ip_end_reg <= 0;
+      ip_end_reg <= 0;
     end
 
     stop_state: begin
-  		dut_busy <= 'd0;
+      dut_busy <= 'd0;
     end
     
   endcase
@@ -467,19 +467,19 @@ end
 
 //how does dynamic base address for fetching from input change for every change in state?
 always @(*) begin
-	casex(current_state)
-		reset_state: begin
-		  dynamic_base_addr = 'd0;
-		end
-		pre_data_fetch_state: begin
-		  dynamic_base_addr = 'd0;
-		end
-		initial_data_fetch_state: begin
-		  if(status_k_fetch_complete)
-		    dynamic_base_addr = 'd1;
-		  else
-		    dynamic_base_addr = 'd0;
-		end
+  casex(current_state)
+    reset_state: begin
+      dynamic_base_addr = 'd0;
+    end
+    pre_data_fetch_state: begin
+      dynamic_base_addr = 'd0;
+    end
+    initial_data_fetch_state: begin
+      if(status_k_fetch_complete)
+        dynamic_base_addr = 'd1;
+      else
+        dynamic_base_addr = 'd0;
+    end
     
     inter_conv1_state,
     inter_conv2_state,
@@ -487,37 +487,37 @@ always @(*) begin
     inter_conv4_state,
     inter_conv5_state: begin
       dynamic_base_addr   = static_base_addr + (((input_row_index*current_size_reg) + input_col_index ) >> 1 ) + 1;
-		end
+    end
     
-		inter_conv6_state,
+    inter_conv6_state,
     conv_compare_state,
     max_pool2_state,
     write_to_output_sram: begin 
-		  if(conv_odd_col_index == current_size_reg - 3)
-		    dynamic_base_addr = static_base_addr + (((conv_row_index+1)*current_size_reg)>>1) + 1'd1;
-		  else
-		    dynamic_base_addr = static_base_addr + ((conv_row_index*current_size_reg + conv_odd_col_index + 1'd1)>>1) + 1'd1;
-		end
-		max_pool1_state: begin
-		  if(conv_row_index == current_size_reg - 3 && conv_odd_col_index == current_size_reg - 3)
-			  dynamic_base_addr = static_base_addr + 1'd1;
-		  else begin
-		    if(conv_odd_col_index == current_size_reg - 3)
-		      dynamic_base_addr = static_base_addr + (((conv_row_index+1)*current_size_reg)>>1) + 1'd1;
-		    else
-		      dynamic_base_addr = static_base_addr + ((conv_row_index*current_size_reg + conv_odd_col_index + 1'd1)>>1) + 1'd1;
-		  end
-		end
-		next_data_fetch_state: begin
-		  dynamic_base_addr = static_base_addr + 1'd1;
-		end
-		stop_state: begin
-		  dynamic_base_addr = 'd0;
-		end
-		default: begin
-		  dynamic_base_addr = 'd0;
-		end
-	endcase
+      if(conv_odd_col_index == current_size_reg - 3)
+        dynamic_base_addr = static_base_addr + (((conv_row_index+1)*current_size_reg)>>1) + 1'd1;
+      else
+        dynamic_base_addr = static_base_addr + ((conv_row_index*current_size_reg + conv_odd_col_index + 1'd1)>>1) + 1'd1;
+    end
+    max_pool1_state: begin
+      if(conv_row_index == current_size_reg - 3 && conv_odd_col_index == current_size_reg - 3)
+        dynamic_base_addr = static_base_addr + 1'd1;
+      else begin
+        if(conv_odd_col_index == current_size_reg - 3)
+          dynamic_base_addr = static_base_addr + (((conv_row_index+1)*current_size_reg)>>1) + 1'd1;
+        else
+          dynamic_base_addr = static_base_addr + ((conv_row_index*current_size_reg + conv_odd_col_index + 1'd1)>>1) + 1'd1;
+      end
+    end
+    next_data_fetch_state: begin
+      dynamic_base_addr = static_base_addr + 1'd1;
+    end
+    stop_state: begin
+      dynamic_base_addr = 'd0;
+    end
+    default: begin
+      dynamic_base_addr = 'd0;
+    end
+  endcase
 end
 
 //conv is made of mult and accum. mult has a pattern of kernel values feeding into it for every conv state which is modelled here
@@ -560,7 +560,7 @@ always@(*) begin
   end
 
   default: begin
-	    multiplier_1_reg = (k_reg_array[0] * ip_sram_read_msb_out);
+      multiplier_1_reg = (k_reg_array[0] * ip_sram_read_msb_out);
       multiplier_2_reg = (k_reg_array[1] * ip_sram_read_lsb_out);
       multiplier_3_reg = 0;
       multiplier_4_reg = (k_reg_array[0] * ip_sram_read_lsb_out);
