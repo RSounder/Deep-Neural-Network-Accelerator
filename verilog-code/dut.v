@@ -7,7 +7,7 @@ module MyDesign(
      
     //---------------------------------------------------------------------------
     //Input SRAM interface
-      output 			input_sram_write_enable    ,
+      output 		input_sram_write_enable    ,
       output reg [11:0] input_sram_write_addresss  ,
       output reg [15:0] input_sram_write_data      ,
       output     [11:0] input_sram_read_address    ,
@@ -23,7 +23,7 @@ module MyDesign(
 
     //---------------------------------------------------------------------------
     //scratchpad SRAM interface
-      output 			scratchpad_sram_write_enable    ,
+      output 		scratchpad_sram_write_enable    ,
       output reg [11:0] scratchpad_sram_write_addresss  ,
       output reg [15:0] scratchpad_sram_write_data      ,
       output reg [11:0] scratchpad_sram_read_address    ,
@@ -43,19 +43,19 @@ module MyDesign(
 
 localparam reset_state 	            = 'd0;
 localparam pre_data_fetch_state     = 'd1;
-localparam initial_data_fetch_state	= 'd2;
+localparam initial_data_fetch_state = 'd2;
 localparam inter_conv1_state        = 'd3;
 localparam inter_conv2_state        = 'd4;
 localparam inter_conv3_state        = 'd5;
 localparam inter_conv4_state        = 'd6;
 localparam inter_conv5_state        = 'd7;
 localparam inter_conv6_state        = 'd8;
-localparam conv_compare_state	      = 'd9;
-localparam max_pool1_state	        = 'd10;
+localparam conv_compare_state       = 'd9;
+localparam max_pool1_state          = 'd10;
 localparam max_pool2_state          = 'd11;
-localparam write_to_output_sram 	  = 'd12;
-localparam next_data_fetch_state 	  = 'd13;
-localparam stop_state	              = 'd14;
+localparam write_to_output_sram     = 'd12;
+localparam next_data_fetch_state    = 'd13;
+localparam stop_state	            = 'd14;
 
 //reg declarations-----------------------------------------------------------
 
