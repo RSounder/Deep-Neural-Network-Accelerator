@@ -7,7 +7,7 @@ module MyDesign(
      
     //---------------------------------------------------------------------------
     //Input SRAM interface
-      output 		        input_sram_write_enable    ,
+      output            input_sram_write_enable    ,
       output reg [11:0] input_sram_write_addresss  ,
       output reg [15:0] input_sram_write_data      ,
       output     [11:0] input_sram_read_address    ,
@@ -23,7 +23,7 @@ module MyDesign(
 
     //---------------------------------------------------------------------------
     //scratchpad SRAM interface
-      output 		        scratchpad_sram_write_enable    ,
+      output            scratchpad_sram_write_enable    ,
       output reg [11:0] scratchpad_sram_write_addresss  ,
       output reg [15:0] scratchpad_sram_write_data      ,
       output reg [11:0] scratchpad_sram_read_address    ,
@@ -41,7 +41,7 @@ module MyDesign(
 
   //using local parameters to set names to fsm states--------------------------
 
-  localparam reset_state 	            = 'd0;
+  localparam reset_state              = 'd0;
   localparam pre_data_fetch_state     = 'd1;
   localparam initial_data_fetch_state = 'd2;
   localparam inter_conv1_state        = 'd3;
@@ -55,7 +55,7 @@ module MyDesign(
   localparam max_pool2_state          = 'd11;
   localparam write_to_output_sram     = 'd12;
   localparam next_data_fetch_state    = 'd13;
-  localparam stop_state	            = 'd14;
+  localparam stop_state               = 'd14;
 
   //reg declarations-----------------------------------------------------------
 
